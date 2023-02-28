@@ -16,11 +16,13 @@
     	<result property="creator"		column="CREATOR"/>
     	<result property="createTime"	column="CREATE_TIME"/>
     	<result property="modifier"		column="MODIFIER"/>
-    	<result property="modifiedTime"	column="MODIFIED_TIME"/>
+    	<result property="modifiedTime"	column="MODIFIED_TIME"/>    	
     	
+    	<result property="userPhone" column="USER_PHONE"/>
     </resultMap>
+
     
-    <select id="userInsert" parameterType="com.spring.user.vo.UserVo">
+    <insert id="userInsert" parameterType="com.spring.user.vo.UserVo">
         INSERT INTO 
         USER_INFO
         (USER_ID
@@ -52,11 +54,23 @@
         ,'SCOTT'
         ,TO_CHAR(SYSDATE)
         )
-    </select>
+    </insert>
     
     <select  id="userIdChk" parameterType="com.spring.user.vo.UserVo" resultType="int">
     	SELECT COUNT(*) 
     	FROM USER_INFO
     	WHERE USER_ID = #{userId}
     </select>    
+   
+   <select id="phoneOption" resultType="com.spring.user.vo.UserVo">
+   		SELECT USER_PHONE as userPhone
+   		FROM PHONE_OP
+   </select>
+   
+   <select id="userLogin" resultMap="userVo" parameterType="com.spring.user.vo.UserVo">
+		SELECT * 
+		FROM USER_INFO
+		WHERE USER_ID = #{userId} 
+		AND USER_PW = #{userPw}
+	</select>
 </mapper>

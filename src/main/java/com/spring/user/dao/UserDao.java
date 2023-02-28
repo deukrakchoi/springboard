@@ -1,17 +1,17 @@
 package com.spring.user.dao;
 
+import java.util.HashMap;
+import java.util.List;
 import com.spring.user.vo.UserVo;
 
-public abstract interface UserDao
+public interface UserDao
 {
-  public abstract int userInsert(UserVo paramUserVo)
-    throws Exception;
+  public int userInsert(UserVo paramUserVo) throws Exception;
 
-  public abstract int userIdChk(String paramString)
-    throws Exception;
+  public int userIdChk(String paramString) throws Exception;
+
+  public List<UserVo> phoneOption() throws Exception;
+
+  public UserVo userLogin(HashMap<String, String> map) throws Exception;
+
 }
-
-/* Location:           C:\workspace\springBoard\src\main\ImportedClasses\
- * Qualified Name:     com.spring.user.dao.UserDao
- * JD-Core Version:    0.6.2
- */

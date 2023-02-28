@@ -7,8 +7,33 @@
 <meta charset="EUC-KR">
 <title>회원가입 페이지</title>
 </head>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+function kakaopost(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+            document.querySelector("#userAddr1").value = data.zonecode;  //새 우편번호
+            document.querySelector("#userAddr2").value = data.address;   //기본주소
+        }
+    }).open();
+}
+</script>
 <script>
 	$j(document).ready(function(){
+		
+		function kakaopost(){
+		    new daum.Postcode({
+		        oncomplete: function(data) {
+		            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+		            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		            document.querySelector("#userAddr1").value = data.zonecode;  //새 우편번호
+		            document.querySelector("#userAddr2").value = data.address;   //기본주소
+		        }
+		    }).open();
+		}
+		
 		
 		var status = "N";
 		
@@ -122,7 +147,7 @@
 </script>
 <body>
 <form class="userJoin">
-<table  align="center">
+<table align="center">
 	<tr>
 		<td align="left">
 			<a href ="/board/boardList.do">List</a>
@@ -172,8 +197,8 @@
 					</td>
 					<td width="350" align="left">
 						<select name="userPhone1" id="userPhone1">
-							<c:forEach items="${userPhone1}" var="userPhone">
-								<option><c:out value="${userPhone.userPhone1}"/></option>
+							<c:forEach var="op" items="${optionList}">
+								<option value="${op.userPhone}">${op.userPhone}</option>
 							</c:forEach>
 						</select> 
 						<!-- oninput이벤트 사용하여 숫자만 입력할 수 있는 정규식 적용(숫자가 아닌값을 입력하면 공백으로 대체)-->
@@ -186,7 +211,8 @@
 						postNo
 					</td>
 					<td width="350" align="left">
-						<input type="text" id="userAddr1" name="userAddr1">
+						<input type="text" id="userAddr1" name="userAddr1" readonly>
+						<input type="button" value="우편번호찾기" onclick="kakaopost()">
 					</td>
 				</tr>
 				<tr>
