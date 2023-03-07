@@ -1,58 +1,70 @@
-/*    */ package com.spring.board.service.impl;
-/*    */ 
-/*    */ import com.spring.board.dao.BoardDao;
-/*    */ import com.spring.board.service.boardService;
-/*    */ import com.spring.board.vo.BoardVo;
-/*    */ import com.spring.board.vo.PageVo;
-/*    */ import java.util.List;
-/*    */ import org.springframework.beans.factory.annotation.Autowired;
-/*    */ import org.springframework.stereotype.Service;
-/*    */ 
-/*    */ @Service
-/*    */ public class boardServiceImpl
-/*    */   implements boardService
-/*    */ {
-/*    */ 
-/*    */   @Autowired
-/*    */   BoardDao boardDao;
-/*    */ 
-/*    */   public String selectTest()
-/*    */     throws Exception
-/*    */   {
-/* 22 */     return this.boardDao.selectTest();
-/*    */   }
-/*    */ 
-/*    */   public List<BoardVo> SelectBoardList(PageVo pageVo)
-/*    */     throws Exception
-/*    */   {
-/* 29 */     return this.boardDao.selectBoardList(pageVo);
-/*    */   }
-/*    */ 
-/*    */   public int selectBoardCnt()
-/*    */     throws Exception
-/*    */   {
-/* 35 */     return this.boardDao.selectBoardCnt();
-/*    */   }
-/*    */ 
-/*    */   public BoardVo selectBoard(String boardType, int boardNum)
-/*    */     throws Exception
-/*    */   {
-/* 41 */     BoardVo boardVo = new BoardVo();
-/*    */ 
-/* 43 */     boardVo.setBoardType(boardType);
-/* 44 */     boardVo.setBoardNum(boardNum);
-/*    */ 
-/* 46 */     return this.boardDao.selectBoard(boardVo);
-/*    */   }
-/*    */ 
-/*    */   public int boardInsert(BoardVo boardVo)
-/*    */     throws Exception
-/*    */   {
-/* 52 */     return this.boardDao.boardInsert(boardVo);
-/*    */   }
-/*    */ }
+package com.spring.board.service.impl;
 
-/* Location:           C:\workspace\springBoard\src\main\ImportedClasses\
- * Qualified Name:     com.spring.board.service.impl.boardServiceImpl
- * JD-Core Version:    0.6.2
- */
+import com.spring.board.dao.BoardDao;
+import com.spring.board.service.boardService;
+import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CodeVo;
+import com.spring.board.vo.PageVo;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+ 
+@Service
+public class boardServiceImpl implements boardService{
+
+	@Autowired
+	BoardDao boardDao;
+
+	public String selectTest() throws Exception{
+		return boardDao.selectTest();
+	}
+ 
+	public List<BoardVo> SelectBoardList(PageVo pageVo) throws Exception{
+		return boardDao.selectBoardList(pageVo);
+	}
+ 
+	public int selectBoardCnt(PageVo pageVo) throws Exception{
+		return boardDao.selectBoardCnt(pageVo);
+	}
+ 
+	public BoardVo selectBoard(String boardType, int boardNum) throws Exception{
+		BoardVo boardVo = new BoardVo();
+		
+		boardVo.setBoardType(boardType);
+		boardVo.setBoardNum(boardNum);
+ 
+		return boardDao.selectBoard(boardVo);
+	}
+ 
+	public int boardInsert(BoardVo boardVo) throws Exception{
+		
+		return boardDao.boardInsert(boardVo);
+	}
+
+	@Override
+	public List<CodeVo> selectCode() throws Exception {
+		// TODO Auto-generated method stub
+		return boardDao.selectCode();
+	}
+	
+	@Override
+	public int boardDelete(BoardVo boardVo) throws Exception {
+		// TODO Auto-generated method stub
+		return boardDao.boardDelete(boardVo);
+	}
+	
+	@Override
+	public int boardUpdate(BoardVo boardVo) throws Exception {
+		// TODO Auto-generated method stub
+		
+		return boardDao.boardUpdate(boardVo);
+	}
+	
+	@Override
+	public int boardViewCnt(BoardVo boardVo) throws Exception {
+		// TODO Auto-generated method stub
+		return boardDao.boardViewCnt(boardVo);
+	}
+	
+}

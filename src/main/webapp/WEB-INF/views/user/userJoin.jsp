@@ -9,7 +9,7 @@
 </head>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-//conflict test
+//우편번호 + 주소
 function kakaopost(){
     new daum.Postcode({
         oncomplete: function(data) {
@@ -19,6 +19,12 @@ function kakaopost(){
             document.querySelector("#userAddr2").value = data.address;   //기본주소
         }
     }).open();
+}
+
+//스페이스 막기(스페이스 -> &#32)
+function checkSpacebar(){
+	var kcode = event.keyCode;
+	if(kcode == 32) event.returnValue = false;
 }
 </script>
 <script>
@@ -162,7 +168,7 @@ function kakaopost(){
 						id
 					</td>
 					<td width="350" align="left">
-						<input type="text" id="userId" name="userId">
+						<input type="text" id="userId" name="userId" onkeydown="checkSpacebar();">
 						<button type="button" id="userIdChk" name="userIdChk">중복확인</button>
 						<span id="idChk"></span>
 					</td>
@@ -172,7 +178,7 @@ function kakaopost(){
 						pw
 					</td>
 					<td width="350" align="left">
-						<input type="password" id="userPw" name="userPw">
+						<input type="password" id="userPw" name="userPw" onkeydown="checkSpacebar();">
 					</td>
 				</tr>
 				<tr>
@@ -180,7 +186,7 @@ function kakaopost(){
 						pw check
 					</td>
 					<td width="350" align="left">
-						<input type="password" id="userPwChk" name="userPwChk">
+						<input type="password" id="userPwChk" name="userPwChk" onkeydown="checkSpacebar();">
 						<span id="pwChk"></span>
 					</td>
 				</tr>
@@ -189,7 +195,7 @@ function kakaopost(){
 						name
 					</td>
 					<td width="350" align="left">
-						<input type="text" id="userName" name="userName">
+						<input type="text" id="userName" name="userName" onkeydown="checkSpacebar();">
 					</td>
 				</tr>
 				<tr>
@@ -203,8 +209,8 @@ function kakaopost(){
 							</c:forEach>
 						</select> 
 						<!-- oninput이벤트 사용하여 숫자만 입력할 수 있는 정규식 적용(숫자가 아닌값을 입력하면 공백으로 대체)-->
-						- <input type="text" id="userPhone2" name="userPhone2" size=2 maxlength='4' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/> 
-						- <input type="text" id="userPhone3" name="userPhone3" size=2 maxlength='4' oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+						- <input type="text" id="userPhone2" name="userPhone2" size=2 maxlength='4' onkeydown="checkSpacebar();"/> 
+						- <input type="text" id="userPhone3" name="userPhone3" size=2 maxlength='4' onkeydown="checkSpacebar();"/>
 					</td>
 				</tr>
 				<tr>
@@ -221,7 +227,7 @@ function kakaopost(){
 						address
 					</td>
 					<td width="350" align="left">
-						<input type="text" id="userAddr2" name="userAddr2">
+						<input type="text" id="userAddr2" name="userAddr2" onkeydown="checkSpacebar();">
 					</td>
 				</tr>
 				<tr>
@@ -229,7 +235,7 @@ function kakaopost(){
 						company
 					</td>
 					<td width="350" align="left">
-						<input type="text" id="userCompany" name="userCompany">
+						<input type="text" id="userCompany" name="userCompany" onkeydown="checkSpacebar();">
 					</td>
 				</tr>
 			</table>

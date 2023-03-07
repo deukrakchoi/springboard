@@ -10,6 +10,7 @@
 <script type="text/javascript">
 	$j(document).ready(function(){
 		$j("#submit").on("click", function(){
+			
 			if($j('#userId').val() == ''){
 				alert("아이디를 입력하세요");
 				$j('#userId').focus();
@@ -28,7 +29,8 @@
 				data: {userId:$j('#userId').val(), userPw:$j('#userPw').val()},
 				success : function(data){
 					if(data == true){
-						location.reload();
+						alert("로그인 성공!");
+						return location.href = "/board/boardList.do";
 					}else{
 						alert("아이디나 비밀번호가 일치하지 않습니다");
 						$j('#userId').focus();

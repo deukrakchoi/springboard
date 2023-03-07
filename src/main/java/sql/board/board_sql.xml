@@ -7,32 +7,64 @@
     	<result property="boardNum" 	column="BOARD_NUM"/>
     	<result property="boardTitle" 	column="BOARD_TITLE"/>
     	<result property="boardComment" column="BOARD_COMMENT"/>
+    	<result property="viewCnt"		column="VIEW_CNT"/>
+    	
+    	<result property="codeType" 	column="CODE_TYPE"/>
+    	<result property="codeId"		column="CODE_ID"/>
+    	<result property="codeName"		column="CODE_NAME"/>
+    </resultMap>
+    
+    <resultMap type="com.spring.board.vo.CodeVo" id="codeVo">
+    	<result property="codeType"		column="CODE_TYPE"/>
+    	<result property="codeId"		column="CODE_ID"/>
+    	<result property="codeName"		column="CODE_NAME"/>
+    	<result property="creator"		column="CREATOR"/>
+    	<result property="createTime"	column="CREATE_TIME"/>
+    	<result property="modifier"		column="MODIFIER"/>
+    	<result property="modifiedTime"		column="MODIFIER_TIME"/>
     </resultMap>
  
+ 	<!-- 조회수 -->
+    <update id="boardViewCnt" parameterType="com.spring.board.vo.BoardVo">
+    	UPDATE BOARD SET
+    		VIEW_CNT = #{viewCnt} + 1
+    	WHERE BOARD_TYPE = #{boardType}
+    	AND BOARD_NUM = #{boardNum}
+    </update>
     
     <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
         SELECT 
-		  BOARD_TYPE
+           CODE_NAME
+          ,CODE_ID
+		  ,BOARD_TYPE
 		  ,BOARD_NUM
 		  ,BOARD_TITLE
 		  ,BOARD_COMMENT
 		  ,TOTAL_CNT
+		  ,VIEW_CNT
 		FROM 
 		(
 		  SELECT
-		      	BOARD_TYPE
-				,BOARD_NUM
-				,BOARD_TITLE
-				,BOARD_COMMENT
+		      	CC.CODE_NAME
+		      	,CC.CODE_ID
+		      	,BO.BOARD_TYPE
+				,BO.BOARD_NUM
+				,BO.BOARD_TITLE
+				,BO.BOARD_COMMENT
 		      	,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
 		      	,COUNT(*) OVER() AS TOTAL_CNT
+		      	,BO.VIEW_CNT
 			FROM
-				BOARD	
+				BOARD BO, COM_CODE CC	
+			WHERE BO.BOARD_TYPE = CC.CODE_ID
+			<if test="codeId != null">
+				AND CC.CODE_ID IN (#{codeId})
+			</if>
 		)
-		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
+		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})* 10
     </select>
     
-    <select id="boardTotal" parameterType="Integer" resultType="Integer">
+    <select id="boardTotal" parameterType="com.spring.board.vo.PageVo" resultType="Integer">
 		  SELECT
 		      	COUNT(*) AS TOTAL_CNT
 			FROM
@@ -41,14 +73,17 @@
     	
     <select id="boardView" parameterType="com.spring.board.vo.BoardVo" resultMap="boardVo">
     	SELECT
-        	BOARD_TYPE
-			,BOARD_NUM
-			,BOARD_TITLE
-			,BOARD_COMMENT
+        	CC.CODE_NAME
+        	,BO.BOARD_TYPE
+			,BO.BOARD_NUM
+			,BO.BOARD_TITLE
+			,BO.BOARD_COMMENT
+			,BO.VIEW_CNT
 		FROM
-			BOARD
-    	WHERE 	BOARD_TYPE = #{boardType}
-    	AND 	BOARD_NUM  = #{boardNum}
+			BOARD BO, COM_CODE CC
+    	WHERE 	BO.BOARD_TYPE = CC.CODE_ID
+    	AND 	BO.BOARD_TYPE = #{boardType}
+    	AND 	BO.BOARD_NUM  = #{boardNum}
     </select>	
     
     <select id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
@@ -64,7 +99,7 @@
         ,MODIFIED_TIME
         )
         VALUES
-        ('1'
+        (#{boardType}
         ,(SELECT NVL(TO_NUMBER(MAX(BOARD_NUM)+1),1)
 		    FROM BOARD
 		    WHERE BOARD_TYPE = #{boardType})
@@ -76,5 +111,28 @@
         ,TO_CHAR(SYSDATE)
         )
     </select>
+    
+    <select id="selectCode" parameterType="com.spring.board.vo.CodeVo" resultMap="codeVo">
+    	SELECT 
+    		CODE_TYPE,
+    		CODE_ID,
+    		CODE_NAME
+		FROM COM_CODE
+		WHERE CODE_TYPE = 'menu'
+    </select>
+    
+    <delete id="boardDelete" parameterType="com.spring.board.vo.BoardVo">
+    	DELETE FROM BOARD
+    	WHERE BOARD_TYPE = #{boardType}
+    	AND BOARD_NUM = #{boardNum}
+    </delete>
+    
+    <update id="boardUpdate" parameterType="com.spring.board.vo.BoardVo">
+    	UPDATE BOARD SET 
+    		BOARD_TITLE = #{boardTitle} 
+    	  , BOARD_COMMENT = #{boardComment}
+    	WHERE BOARD_TYPE = #{boardType}
+    	AND BOARD_NUM = #{boardNum}
+    </update>
     
 </mapper>

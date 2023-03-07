@@ -1,23 +1,28 @@
 package com.spring.board.dao;
 
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CodeVo;
 import com.spring.board.vo.PageVo;
+
 import java.util.List;
 
 public abstract interface BoardDao
 {
-  public abstract String selectTest() throws Exception;
+	public String selectTest() throws Exception;
+	
+	public List<BoardVo> selectBoardList(PageVo PageVo) throws Exception;
+	
+	public BoardVo selectBoard(BoardVo BoardVo) throws Exception;
 
-  public abstract List<BoardVo> selectBoardList(PageVo paramPageVo) throws Exception;
+	public int selectBoardCnt(PageVo pageVo) throws Exception;
 
-  public abstract BoardVo selectBoard(BoardVo paramBoardVo) throws Exception;
+	public int boardInsert(BoardVo BoardVo) throws Exception;
 
-  public abstract int selectBoardCnt() throws Exception;
+	public List<CodeVo> selectCode() throws Exception;
 
-  public abstract int boardInsert(BoardVo paramBoardVo) throws Exception;
+	public int boardDelete(BoardVo boardVo) throws Exception;
+
+	public int boardUpdate(BoardVo boardVo) throws Exception;
+
+	public int boardViewCnt(BoardVo boardVo) throws Exception;
 }
-
-/* Location:           C:\workspace\springBoard\src\main\ImportedClasses\
- * Qualified Name:     com.spring.board.dao.BoardDao
- * JD-Core Version:    0.6.2
- */
